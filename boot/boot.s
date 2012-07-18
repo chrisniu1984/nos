@@ -34,6 +34,7 @@ main:
     mov     ax,0x1301
     int     0x10
 
+    ;加载setup到0x07E0:0000
     mov     ax,SEG_SETUP
     mov     es,ax               ;es = seg
     mov     bx,0x0000           ;bx = offset
@@ -44,6 +45,7 @@ main:
     mov     ah,0x02
     int     0x13
 
+    ;加载kenerl到0x1000:0000
     mov     ax,SEG_KERNEL
     mov     es,ax
     mov     bx,0x0000           ;bx = offset
