@@ -46,7 +46,7 @@ if [ -z $1 ]; then
     make -C boot; if [ $? -ne 0 ]; then exit -1; fi
     
     # 写入到bochs/a.img
-    dd if=/dev/null of=bochs/a.img bs=1474560 count=1
+    dd if=/dev/zero of=bochs/a.img bs=1474560 count=1
     dd if=boot/boot of=bochs/a.img bs=${FDSEC_UNIT} count=1 conv=notrunc seek=0
     dd if=setup/setup of=bochs/a.img bs=${FDSEC_UNIT} count=${FDSEC_SETUP_NUM} conv=notrunc seek=$(($FDSEC_SETUP-1))
     dd if=kernel/kernel of=bochs/a.img bs=${FDSEC_UNIT} count=${FDSEC_KERNEL_NUM} conv=notrunc seek=$(($FDSEC_KERNEL-1))
