@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NAME=`basename $0`
+
 if [ -z $1 ]; then
     # 编译setup
     make -C setup; if [ $? -ne 0 ]; then exit -1; fi
@@ -57,4 +59,13 @@ elif [ $1 == "clean" ]; then
     make -C setup clean
     make -C kernel clean
     make -C bochs clean
+
+elif [ $1 == "help" ]; then
+    function show()
+    {
+        echo "  " $@
+    }
+    show $NAME
+    show $NAME clean
+    show $NAME help
 fi
