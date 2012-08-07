@@ -1,5 +1,5 @@
 ;
-; setup.s
+; setup.s (nasm)
 ;
 ; setup被boot加载到物理地址0x7E00处。
 ;
@@ -12,10 +12,10 @@ jmp    _start
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 _GDT:
-    dq  0x0000000000000000  ; 空描述符
-    m4Code  BASEADDR,         0xFFFFF, G_1B, DPL_0, CODE_ER
-    m4Data  BASEADDR,         0xFFFFF, G_1B, DPL_0, DATA_RW
-    m4Data  0x000B8000,       0xFFFFF, G_1B, DPL_0, DATA_RW
+    dq  0x0000000000000000                                  ; 0x00,空描述符              
+    m4Code  BASEADDR,         0xFFFFF, G_1B, DPL_0, CODE_ER ; 0x08,code
+    m4Data  BASEADDR,         0xFFFFF, G_1B, DPL_0, DATA_RW ; 0x10,data
+    m4Data  0x000B8000,       0xFFFFF, G_1B, DPL_0, DATA_RW ; 0x18,vga
 GdtPtr: dw  $ - _GDT - 1
         dd    0
 
@@ -70,7 +70,7 @@ _start:
     mov     cr0, eax
 
     ; 真正进入保护模式
-    jmp     8 :0
+    jmp     0x08:0
 
     ; never be here
     jmp     $

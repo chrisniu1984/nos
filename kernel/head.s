@@ -1,3 +1,9 @@
+;
+; heas.s (nasm)
+;
+; 将地址指针保存到全局变量，这只栈指针，跳到main函数
+;
+
 GLOBAL _start
 GLOBAL _GDT, _GDT_LIMIT, _IDT, _IDT_LIMIT
 
