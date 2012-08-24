@@ -67,3 +67,26 @@ void vga_goto(__u8 row, __u8 col)
     m_row = row;
     m_col = col;
 }
+
+void vga_crlf()
+{
+    m_col = 0;
+    m_row++;
+    if (m_row >= 25) {
+        vga_clear();
+        m_row = 0;
+    }
+}
+
+void vga_string(char *str)
+{
+    int i = 0;
+    for (i=0; str[i] != '\0'; i++) {
+        if (str[i] == '\n' || str[i] == '\r') {
+            vga_crlf();
+        }
+        else {
+            vga_put(str[i]);
+        }
+    }
+}

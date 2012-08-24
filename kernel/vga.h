@@ -32,6 +32,10 @@ void vga_clear();
 void vga_put_xy(__u8 chr, __u8 row, __u8 col);
 
 void vga_goto(__u8 row, __u8 col);
+void vga_crlf();
+
 void vga_put(__u8 chr);
+
+void vga_string(char *str);
 
 #endif

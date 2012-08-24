@@ -2,9 +2,9 @@ CC = gcc
 ASM = nasm
 LD = ld
 
-CFLAGS = -Wall -c -m32 -I./ -nostdinc
+CFLAGS = -Wall -c -m32 -I./ -nostdinc -fno-stack-protector
 LDFLAGS = -m elf_i386 -nostdlilb -Ttext 0
-LIBS = head.o main.o vga.o
+LIBS = head.o main.o vga.o idt.o
 
 kernel: system
 	objcopy -O binary -R .note -R .comment system kernel
