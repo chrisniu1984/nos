@@ -1,6 +1,6 @@
-
 #include <types.h>
 #include <vga.h>
+#include <io.h>
 #include <idt.h>
 
 struct idt_reg_t {
@@ -23,22 +23,42 @@ struct idt_gate_t {
 
 static struct idt_reg_t m_idr;
 static struct idt_gate_t *m_idt = NULL;
+#define CLK_8253    (1193187)
+#define INIT_8253   (CLK_8253/HZ)
 
-void idt_trap_resv(void)
+int idt_trap_resv(void)
 {
-    vga_string("idt_trap_resv\n\0");
+    //vga_string("idt_trap_resv\n\0");
+    return 0;
 }
 
-void idt_int_timer(void)
+int idt_int_timer(void)
 {
-    vga_string("idt_int_timer\n\0");
-    __asm__("sti":::);
+    static unsigned int cnt = 0;
+    static unsigned char a = '0';
+
+    if (cnt==0) {
+        vga_put_xy(a, 0, 0);
+
+        a += 1;
+        if (a>'9') {
+            a = '0';
+        }
+    }
+    cnt = (cnt+1) % HZ;
+
+    sti();
+    eoi();
+
+    return 0;
 }
 
-void idt_int_keyboard(void)
+int idt_int_keyboard(void)
 {
     vga_string("idt_keyboard\n\0");
-    __asm__("sti":::);
+    eoi();
+    sti();
+    return 0;
 }
 
 void idt_set_trap(int n, int dpl, void *addr)
@@ -100,9 +120,18 @@ void idt_init()
         idt_set_trap(i, 0, idt_trap_resv); //19-31    Reserved By Intel
     }
 
-    idt_set_int(32, 0, idt_int_timer); // timer
-    idt_set_int(33, 0, idt_int_keyboard); // keyboard
+    // timer 8253 PIT
+	outb(0x43, 0x36);		/* binary, mode 3, LSB/MSB, ch 0 */
+	outb(0x40, INIT_8253&0xFF);	/* LSB */
+	outb(0x40, INIT_8253>>8);	/* MSB */
+    idt_set_int(32, 0, idt_int_timer);
+    outb(0x21, inb(0x21)&0xFE);
 
-    __asm__("sti":::);
+    // keyboard
+    idt_set_int(33, 0, idt_int_keyboard);
+    outb(0x21, inb(0x21)&0xFD);
+
+    // 开中断
+    sti();
 }
 

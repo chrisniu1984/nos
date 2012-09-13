@@ -38,4 +38,5 @@ void vga_put(__u8 chr);
 
 void vga_string(char *str);
 
+
 #endif

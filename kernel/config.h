@@ -3,4 +3,6 @@
 
 #define _BITS_32_
 
+#define HZ  1000
+
 #endif

@@ -7,7 +7,7 @@ LDFLAGS = -m elf_i386 -nostdlilb -Ttext 0
 LIBS = head.o main.o vga.o idt.o
 
 kernel: system
-	objcopy -O binary -R .note -R .comment system kernel
+	objcopy -O binary -S -R .note -R .comment system kernel
 
 system: $(LIBS)
 	$(LD) $(LDFLAGS) $(^) -o $(@)

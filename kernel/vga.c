@@ -26,6 +26,9 @@ void vga_clear()
                      ::"m"(chr), "m"(m_color), "m"(edi));
         }
     }
+
+    m_row = 0;
+    m_col = 0;
 }
 
 void vga_put_xy(__u8 chr, __u8 row, __u8 col)
@@ -80,7 +83,7 @@ void vga_crlf()
 
 void vga_string(char *str)
 {
-    int i = 0;
+    static int i = 0;
     for (i=0; str[i] != '\0'; i++) {
         if (str[i] == '\n' || str[i] == '\r') {
             vga_crlf();

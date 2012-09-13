@@ -2,7 +2,7 @@ display_library: sdl
 romimage: file=$BXSHARE/BIOS-bochs-latest
 vgaromimage: file=$BXSHARE/VGABIOS-lgpl-latest
 
-megs:4
+megs:32
 
 floppya: image=./a.img,status=inserted
 boot:a
